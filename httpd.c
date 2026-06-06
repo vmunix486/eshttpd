@@ -21,8 +21,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <limits.h>
-#include <sys/types.h>
+/* #include <limits.h> */
+#include "types.h"
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -32,8 +32,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <paths.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#include "in.h"
+#include "inet.h"
 #include <sys/wait.h>
 
 #define DEF_PORT        80
@@ -42,6 +42,12 @@
 #define WS(c)   ( ((c) == ' ') || ((c) == '\t') || ((c) == '\r') || ((c) == '\n') )
 
 #define errmsg(str)     write(STDERR_FILENO, str, sizeof(str) - 1)
+
+#define PATH_MAX        4096
+#define _PATH_DOCBASE   "/var/www"
+#define S_IFMT  00170000
+#define S_IFDIR  0040000
+#define SO_LISTEN_BUFSIZ	128
 
 char* get_mime_type(char *name)
 {
