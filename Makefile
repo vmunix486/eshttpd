@@ -6,8 +6,8 @@ RM=rm
 RMFLAGS=-f
 # If capable, you can put -flto for more speed increase, or -Os if you smaller executables
 
-all: httpd.c
-	$(CC) $(CFLAGS) $(INCLUDES) httpd.c -o httpd
+all: eshttpd.c
+	$(CC) $(CFLAGS) $(INCLUDES) eshttpd.c -o eshttpd
 
 clean:
-	$(RM) $(RMFLAGS) httpd
+	$(RM) $(RMFLAGS) eshttpd

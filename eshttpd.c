@@ -1,12 +1,12 @@
 /*
- * An nano-http server. Part of the linux-86 project
- * 
- * Copyright (c) 2001 Harry Kalogirou <harkal@rainbow.cs.unipi.gr>
+ * The httpd from ELKS, tuned to be portable to other platforms.
  *
- */
+ * Originally written by Harry Kalogirou. Massive shoutout to him.
+ *
+ * Copyright (c) 2026 vmunix
+*/
 
-/*
- *  This program is free software; you can redistribute it and/or modify
+/*  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
@@ -186,7 +186,9 @@ int main(int argc, char **argv)
     localadr.sin_port = htons(DEF_PORT);
     localadr.sin_addr.s_addr = INADDR_ANY;
     if (bind(listen_sock, (struct sockaddr *)&localadr, sizeof(struct sockaddr_in)) < 0) {
-        errmsg("httpd: bind error (may already be running)\n");
+        errmsg("eshttpd: bind error (may already be running)\n");
+	errmsg("Another reason for this is because you did not run it as root.\n");
+	errmsg("On Linux, you need root privilages to access HTTP port 80.\n");
         return 1;
     }
     if (listen(listen_sock, 5) < 0) {
@@ -196,7 +198,7 @@ int main(int argc, char **argv)
 
     /* become daemon, debug output on 1 and 2*/
     if ((ret = fork()) == -1) {
-        errmsg("httpd: No more processes\n");
+        errmsg("eshttpd: No more processes\n");
         return 1;
     }
     if (ret) exit(0);
@@ -218,7 +220,7 @@ int main(int argc, char **argv)
 
         if ((ret = fork()) == -1) {
             close(conn_sock);
-            errmsg("httpd: No more processes\n");
+            errmsg("eshttpd: No more processes\n");
         } else if (ret) {
             close(conn_sock);
             waitpid(ret, NULL, 0);
