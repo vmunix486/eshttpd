@@ -8,7 +8,7 @@ AI can be used, but only for code, everything else has to be written by a person
 
 Code comments don't have to be strictly formal, they can be written however which way you want. Something to remember is that uou can be a comedian, but you still need to get your point across good enough so that others can understand the code. Signing comments is allowed.<sup>(b)</sup>
 
-<sup>(a)</sup> Please do not do that :sob: :wilted-rose:
+<sup>(a)</sup> Please do not do that :sob: :wilted_flower:
 
 <sup>(b)</sup> eg. 
 ```c
