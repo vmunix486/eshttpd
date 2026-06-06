@@ -21,7 +21,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-/* #include <limits.h> */
+/*===================================*/
+/* Include files                     */
+/*===================================*/
 #include "types.h"
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -31,11 +33,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include <paths.h>
 #include "in.h"
 #include "inet.h"
 #include <sys/wait.h>
 
+/*===================================*/
+/* Global definitions		     */
+/*===================================*/
 #define DEF_PORT        80
 #define DEF_CONTENT     "text/html"
 
@@ -48,6 +52,8 @@
 #define S_IFMT  00170000
 #define S_IFDIR  0040000
 #define SO_LISTEN_BUFSIZ	128
+
+/* This is getting the MIME type of files, so the client can understand what type of file it is and show it. */
 
 char* get_mime_type(char *name)
 {
@@ -73,6 +79,9 @@ char* get_mime_type(char *name)
     return "application/octet-stream";
 }
 
+/* This is sending the HTTP header to the client.
+ * TODO: Change the date, name, and HTTP version */
+
 void send_header(int fd, char *ct)
 {
     char buf[128];
@@ -82,6 +91,9 @@ void send_header(int fd, char *ct)
                  "Content-Type: %s\r\n",ct);
     write(fd, buf, strlen(buf));
 }
+
+/* This is sending the 404 Error if the file the client specified does not work 
+ * TODO: Same as the previous TODO */
 
 void send_error(int fd, int errnum, char *str)
 {
