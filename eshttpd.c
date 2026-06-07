@@ -72,6 +72,8 @@ char* get_mime_type(char *name)
         return "image/png";
     if ( strcmp( dot, ".css" ) == 0 )
         return "text/css";
+    if ( strcmp( dot, ".svg" ) == 0 )
+	    return "image/svg+xml";
     if ( strcmp( dot, ".vrml" ) == 0 || strcmp( dot, ".wrl" ) == 0 )
         return "model/vrml";
     if ( strcmp( dot, ".midi" ) == 0 || strcmp( dot, ".mid" ) == 0 )
