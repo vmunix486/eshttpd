@@ -133,7 +133,7 @@ void process_request(int fd)
         c++;
     *c = '\0';
 
-    if (strcasecmp(buf, "get")) {
+    if (strcasecmp(buf, "GET") != 0) {
         send_error(fd, 404, "Method not supported");
         return;     
     }
