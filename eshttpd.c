@@ -148,7 +148,8 @@ void process_request(int fd)
     snprintf(fullpath, sizeof(fullpath), "%s%s", _PATH_DOCBASE, file);
 
     if (!stat(fullpath, &st) && (st.st_mode & S_IFMT) == S_IFDIR) {
-        if (file[strlen(fullpath) - 1] != '/')
+        /* Fixed array index, was wrong before. -vmunix */
+	    if (fullpath[strlen(fullpath) - 1] != '/')
             strcat(fullpath, "/");
         strcat(fullpath, "index.html");
     }
