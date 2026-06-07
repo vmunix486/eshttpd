@@ -18,3 +18,4 @@
  - Fix compilation notes and warnings
  - Add support for flags, such as verbose mode, help, running the program in the foreground, and changing the HTTP port.
  - Fix runtime errors on Android (Termux)
+ - Switch `sprintf()` to `snprintf()` (right now, when sprintf is switched over to snprintf, it causes the client to only get plain text)
