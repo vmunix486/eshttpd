@@ -143,9 +143,9 @@ void process_request(int fd)
         c++;
     *c = '\0';
 
-    /* TODO : Use strncat when security is the only problem of this server! */
-    strcpy(fullpath, _PATH_DOCBASE);
-    strcat(fullpath, file);
+    /* vmunix: fixed a buffer overflow vulnerability here.
+     * This actually saved some SLOC :) */
+    snprintf(fullpath, sizeof(fullpath), "%s%s", _PATH_DOCBASE, file);
 
     if (!stat(fullpath, &st) && (st.st_mode & S_IFMT) == S_IFDIR) {
         if (file[strlen(fullpath) - 1] != '/')
