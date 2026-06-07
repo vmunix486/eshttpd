@@ -86,7 +86,7 @@ void send_header(int fd, char *ct)
 {
     char buf[128];
 
-    sprintf(buf, "HTTP/1.0 200 OK\r\nServer: nanoHTTPd/0.1\r\n"
+    sprintf(buf, "HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
                  "Date: Thu Apr 26 15:37:46 GMT 2001\r\n"
                  "Content-Type: %s\r\n",ct);
     write(fd, buf, strlen(buf));
