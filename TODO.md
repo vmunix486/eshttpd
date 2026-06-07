@@ -15,3 +15,4 @@
  - Add support for compiling with MSVC++ 2008 (for Windows shipment)
  - Update the date stamps within `eshttpd.c` (with something like time.h)
  - Have option to use `fork()` (looking at you, uclinux rofl)
+ - Fix compilation notes and warnings

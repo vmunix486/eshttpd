@@ -168,7 +168,7 @@ int main(int argc, char **argv)
     struct sockaddr_in localadr;
 
     if ((listen_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        errmsg("httpd: Network is down\n");
+        errmsg("eshttpd: Network is down\n");
         return -1;
     }
 
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
     /* set small listen buffer to save ktcp memory */
     ret = SO_LISTEN_BUFSIZ;
     if (setsockopt(listen_sock, SOL_SOCKET, SO_RCVBUF, &ret, sizeof(int)) < 0)
-        errmsg("httpd: SO_RCVBUF");
+        errmsg("eshttpd: SO_RCVBUF");
 
     localadr.sin_family = AF_INET;
     localadr.sin_port = htons(DEF_PORT);
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
         return 1;
     }
     if (listen(listen_sock, 5) < 0) {
-        errmsg("httpd: listen\n");
+        errmsg("eshttpd: listen\n");
         return 1;
     }
 
