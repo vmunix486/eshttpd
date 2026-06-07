@@ -80,6 +80,8 @@ char* get_mime_type(char *name)
 	    return "image/x-portable-bitmap";
     if ( strcmp( dot, ".m4a" ) == 0 )
 	    return "audio/mp4";
+    if ( strcmp( dot, ".mp4" ) == 0 )
+	    return "video/mp4";
     if ( strcmp( dot, ".vrml" ) == 0 || strcmp( dot, ".wrl" ) == 0 )
         return "model/vrml";
     if ( strcmp( dot, ".midi" ) == 0 || strcmp( dot, ".mid" ) == 0 )
