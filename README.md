@@ -4,7 +4,7 @@ Extremely Small httpd, from ELKS
 # Features
 
  - Very small code size
- - Can serve files (maybe, not tested)
+ - Can serve files 
  - More TBA
 
 # Goal
