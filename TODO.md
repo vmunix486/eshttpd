@@ -17,3 +17,4 @@
  - Have option to use `fork()` (looking at you, uclinux rofl)
  - Fix compilation notes and warnings
  - Add support for flags, such as verbose mode, help, running the program in the foreground, and changing the HTTP port.
+ - Fix runtime errors on Android (Termux)
