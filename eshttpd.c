@@ -129,9 +129,10 @@ void send_header(int fd, char *ct)
 {
     char buf[128];
 
-    sprintf(buf, "HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
-                 "Date: Mon Jun 8 15:37:46 GMT 2026\r\n"
-                 "Content-Type: %s\r\n",ct);
+    snprintf(buf,
+	"HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
+        "Date: Mon Jun 8 15:37:46 GMT 2026\r\n"
+        "Content-Type: %s\r\n",ct);
     write(fd, buf, strlen(buf));
 }
 
@@ -159,9 +160,11 @@ void send_error(int fd, int errnum, char *str)
 {
     char buf[128];
 
-    sprintf(buf,"HTTP/1.0 %d %s\r\nContent-type: %s\r\n", errnum, str, DEF_CONTENT);
+    snprintf(buf,
+	"HTTP/1.0 %d %s\r\nContent-type: %s\r\n", errnum, str, DEF_CONTENT);
     write(fd, buf, strlen(buf));
-    sprintf(buf,"Connection: close\r\n"
+    snprintf(buf,
+		"Connection: close\r\n"
                 "Date: Thu Apr 26 15:37:46 GMT 2001\r\n"
                 "\r\n%s\r\n", str);
     write(fd, buf, strlen(buf));
