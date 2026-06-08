@@ -8,6 +8,8 @@ AI can be used, but only for code, everything else has to be written by a person
 
 Code comments don't have to be strictly formal, they can be written however which way you want. Something to remember is that uou can be a comedian, but you still need to get your point across good enough so that others can understand the code. Signing comments is allowed.<sup>(b)</sup>
 
+If you are wanting to add a new feature to eshttpd, then make sure that it is capable of being modular, with `#ifdef` and `#else` statements. If you are wondering how you can do this, then look at how time setting is done, since it is modular.
+
 <sup>(a)</sup> Please do not do that :sob: :wilted_flower:
 
 <sup>(b)</sup> eg. 
