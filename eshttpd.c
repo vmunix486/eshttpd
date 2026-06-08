@@ -154,6 +154,15 @@ void process_request(int fd)
         strcat(fullpath, "index.html");
     }
 
+	/* This is for if somebody tries go get something out
+	 * of the /var/www directory, such as trying to GET
+	 * /../../../etc/passwd. I cannot test if this works
+	 * or not. */
+	if (strstr(fullpath, "..") != NULL) {
+		send_error(fd, 403, "Forbidden");
+		return;
+	}
+
     fin = open(fullpath, O_RDONLY);
     if (fin < 0) {
         send_error(fd, 404, "Document (probably) not found");
