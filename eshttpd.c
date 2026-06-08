@@ -37,6 +37,11 @@
 #include "inet.h"
 #include <sys/wait.h>
 
+#ifdef _TIME
+#include <time.h>
+#endif
+
+
 /*===================================*/
 /* Global definitions		     */
 /*===================================*/
@@ -89,22 +94,67 @@ char* get_mime_type(char *name)
     return "application/octet-stream";
 }
 
-/* This is sending the HTTP header to the client.
- * TODO: Change the date, name, and HTTP version */
+/* If the libc has support for time, then get the time of
+ * connection with time.h in RFC 2822 format. */
+#ifdef _TIME
+void get_http_date(char *buf, size_t len)
+{
+	time_t now;
+	struct tm *gmt;
+
+	time(&now);
+	gmt = gmtime(&now);
+	strftime(buf, len, "%a, %d %b %Y %H:%M:%S GMT", gmt);
+}
+#endif
+
+/* This is sending the HTTP header to the client. */
+#ifdef _TIME
+void send_header(int fd, char *ct)
+{
+	char buf[256]; /* increased from 128 to accept date */ 
+	char datebuf[64];
+
+	get_http_date(datebuf, sizeof(datebuf));
+	snprintf(buf, sizeof(buf),
+		"HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
+		"Date: %s\r\n"
+		"Content-Type: %s\r\n", datebuf, ct);
+	write(fd, buf, strlen(buf));
+}
+
+#else
 
 void send_header(int fd, char *ct)
 {
     char buf[128];
 
     sprintf(buf, "HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
-                 "Date: Thu Apr 26 15:37:46 GMT 2001\r\n"
+                 "Date: Mon Jun 8 15:37:46 GMT 2026\r\n"
                  "Content-Type: %s\r\n",ct);
     write(fd, buf, strlen(buf));
 }
 
-/* This is sending the 404 Error if the file the client specified does not work 
- * TODO: Same as the previous TODO */
+#endif
 
+/* This is sending the 404 Error if the file the client specified does not work */
+#ifdef _TIME
+void send_error(int fd, int errnum, char *str)
+{
+	char buf[256]; /* increased from 128 */
+	char datebuf[64];
+
+	get_http_date(datebuf, sizeof(datebuf));
+	snprintf(buf, sizeof(buf),
+		"HTTP/1.0 %d %s\r\nContent-Type: %s\r\n", errnum, str, DEF_CONTENT);
+	write(fd, buf, strlen(buf));
+	snprintf(buf, sizeof(buf),
+		"Connection: close\r\n"
+		"Date: %s\r\n"
+		"\r\n%s\r\n", datebuf, str);
+	write(fd, buf, strlen(buf));
+}
+#else
 void send_error(int fd, int errnum, char *str)
 {
     char buf[128];
@@ -116,6 +166,7 @@ void send_error(int fd, int errnum, char *str)
                 "\r\n%s\r\n", str);
     write(fd, buf, strlen(buf));
 }
+#endif
 
 void process_request(int fd)
 {

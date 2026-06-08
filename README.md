@@ -5,6 +5,7 @@ Extremely Small httpd, from ELKS
 
  - Very small code size
  - Can serve files 
+ - Very Optional (Can turn off dynamic time checking lol)
  - More TBA
 
 # Goal

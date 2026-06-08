@@ -13,7 +13,6 @@
  - Add support for embedding CGI scripts into HTML files
  - Add support for other files, eg. SVG, PBM, Javascript, Java, etc. etc.
  - Add support for compiling with MSVC++ 2008 (for Windows shipment)
- - Update the date stamps within `eshttpd.c` (with something like time.h)
  - Have option to use `fork()` (looking at you, uclinux rofl)
  - Fix compilation notes and warnings
  - Add support for flags, such as verbose mode, help, running the program in the foreground, and changing the HTTP port.
