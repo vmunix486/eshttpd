@@ -9,7 +9,6 @@
 typedef __u32 ipaddr_t;		/* ip address in network byte order*/
 
 #ifdef __GNUC__
-#define ntohs(x)	__builtin_bswap16(x)
 #define ntohl(x)	__builtin_bswap32(x)
 
 #else
@@ -37,6 +36,7 @@ struct sockaddr_in {
     unsigned short sin_family;	/* AF_INET */
     unsigned short sin_port;	/* port in network order */
     struct in_addr sin_addr;
+    char sin_zero[8];		/* Added to improve compatibility on older linux distros. You can comment out this line if it is causing problems */
 };
 
 #define INADDR_ANY      ((unsigned long) 0x00000000)

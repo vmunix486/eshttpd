@@ -12,7 +12,6 @@ all: eshttpd.c
 	$(CC) $(CFLAGS) $(DEFS) $(INCLUDES) eshttpd.c -o eshttpd
 
 test:
-	sudo killall eshttpd
 	sudo ./eshttpd
 	$(CURL) -v localhost
 	sudo killall eshttpd
