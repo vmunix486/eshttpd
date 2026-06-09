@@ -5,4 +5,4 @@ Now, one of the goals of eshttpd is to be very modular, and as to not forcefully
 | Command | Description |
 | --- | --- |
 | `-D_TIME` | Enable time setting (requires `time.h`) |
-| `-D_BSD` | Fixes some warnings that are caused by redefinitions on BSD's |
+| `-D_NOREDEF` | Fixes some warnings that are caused by redefinitions |

@@ -1,6 +1,5 @@
 # TODO
 
- - Add support for Windows (would love for support for 95/NT 3.1)
  - Test support for MacOS (PPC, x86, cannot test ARM)
  - Test support for RTOS's (FreeRTOS, Zephyr, etc.)
  - Test support for UNIX (SCO OpenServer, Sun/Oracle Solaris, Intel UNIX)

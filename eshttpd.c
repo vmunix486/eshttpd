@@ -55,7 +55,7 @@
 #define PATH_MAX        4096
 #define _PATH_DOCBASE   "/var/www"
 
-#ifdef _BSD
+#ifdef _NOREDEF
 #else
 #define S_IFMT  00170000
 #define S_IFDIR  0040000
