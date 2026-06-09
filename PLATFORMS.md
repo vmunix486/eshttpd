@@ -3,6 +3,7 @@
 # x86
 
  - Ubuntu 4.10 (GCC 3.4.4 + glibc 2.3.2 + Pentium III)
+ - NetBSD 10.1 (GCC 10.5.0 + BSD libc + Core 2 Qemu)
 
 ## x86-64
 
