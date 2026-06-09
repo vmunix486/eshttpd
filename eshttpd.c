@@ -24,7 +24,7 @@
 /*===================================*/
 /* Include files                     */
 /*===================================*/
-#include "types.h"
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -33,8 +33,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-#include "in.h"
-#include "inet.h"
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <sys/wait.h>
 
 #ifdef _TIME

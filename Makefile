@@ -2,7 +2,7 @@
 CC=cc
 CFLAGS= -O3 -std=c89
 DEFS= -D_TIME
-INCLUDES=-I.
+INCLUDES=
 RM=rm
 RMFLAGS=-f
 CURL=curl
