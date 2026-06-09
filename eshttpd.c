@@ -54,8 +54,13 @@
 
 #define PATH_MAX        4096
 #define _PATH_DOCBASE   "/var/www"
+
+#ifdef _NETBSD
+#else
 #define S_IFMT  00170000
 #define S_IFDIR  0040000
+#endif
+
 #define SO_LISTEN_BUFSIZ	128
 
 /* This is getting the MIME type of files, so the client can understand what type of file it is and show it. */
