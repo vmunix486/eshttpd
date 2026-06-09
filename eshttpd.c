@@ -55,7 +55,7 @@
 #define PATH_MAX        4096
 #define _PATH_DOCBASE   "/var/www"
 
-#ifdef _NETBSD
+#ifdef _BSD
 #else
 #define S_IFMT  00170000
 #define S_IFDIR  0040000
@@ -230,7 +230,8 @@ void process_request(int fd)
     size = lseek(fin, 0, SEEK_END);
     lseek(fin, 0, SEEK_SET);
     send_header(fd, get_mime_type(fullpath));
-    sprintf(buf,"Content-Length: %ld\r\n\r\n", size);
+    snprintf(buf,"Content-Length: %ld\r\n\r\n", 
+		size);
     write(fd, buf, strlen(buf));
 
     do {
