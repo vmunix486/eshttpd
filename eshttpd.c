@@ -230,8 +230,9 @@ void process_request(int fd)
     size = lseek(fin, 0, SEEK_END);
     lseek(fin, 0, SEEK_SET);
     send_header(fd, get_mime_type(fullpath));
-    snprintf(buf,"Content-Length: %ld\r\n\r\n", 
-		size);
+    /*snprintf(buf,"Content-Length: %ld\r\n\r\n", 
+		size); */
+	snprintf(buf, sizeof(buf), "Content-Length: %ld\r\n\r\n", (long)size);
     write(fd, buf, strlen(buf));
 
     do {
