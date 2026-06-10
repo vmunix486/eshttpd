@@ -5,4 +5,6 @@ Now, one of the goals of eshttpd is to be very modular, and as to not forcefully
 | Command | Description |
 | --- | --- |
 | `-D_TIME` | Enable time setting (requires `time.h`) |
-| `-D_NOREDEF` | Fixes some warnings that are caused by redefinitions |
+| `-D_NO_REDEFINITION` | Fixes some warnings that are caused by redefinitions |
+| `-D_FLAGS` | Adds support for using flags (-d, -h, etc.) to the program |
+

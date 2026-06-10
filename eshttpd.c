@@ -1,4 +1,4 @@
-/*
+﻿/*
  * The httpd from ELKS, tuned to be portable to other platforms.
  *
  * Originally written by Harry Kalogirou. Massive shoutout to him.
@@ -45,7 +45,12 @@
 /*===================================*/
 /* Global definitions		     */
 /*===================================*/
-#define DEF_PORT        80
+#ifdef _FLAGS
+#define DEF_PORT	80
+static int port = DEF_PORT;
+#else
+#define DEF_PORT	80
+#endif
 #define DEF_CONTENT     "text/html"
 
 #define WS(c)   ( ((c) == ' ') || ((c) == '\t') || ((c) == '\r') || ((c) == '\n') )
@@ -53,9 +58,14 @@
 #define errmsg(str)     write(STDERR_FILENO, str, sizeof(str) - 1)
 
 #define PATH_MAX        4096
-#define _PATH_DOCBASE   "/var/www"
+#ifdef _FLAGS
+#define _PATH_DOCBASE	"/var/www"
+static const char *docbase = _PATH_DOCBASE;
+#else
+#define _PATH_DOCBASE	"/var/www"
+#endif
 
-#ifdef _NOREDEF
+#ifdef _NO_REDEFINITION
 #else
 #define S_IFMT  00170000
 #define S_IFDIR  0040000
@@ -244,7 +254,33 @@ void process_request(int fd)
 int main(int argc, char **argv)
 {
     int ret, conn_sock, listen_sock;
+#ifdef _FLAGS
+    int opt;
+#else
+#endif
     struct sockaddr_in localadr;
+
+#ifdef _FLAGS
+    while ((opt = getopt(argc, argv, "d:p:h")) != -1) { /* This is parsing all the flags if the user wants to tune anything */
+	    switch (opt) {
+		    case 'd':
+			    docbase = optarg;
+			    break;
+		    case 'p':
+			    port = atoi(optarg);
+			    break;
+		    case 'h':
+			    printf("eshttpd - very small HTTP server\n");
+			    printf("Usage: -p [PORT] -d [DOCBASE]\n");
+			    printf("{-h|-help} This message\n");
+			    return 0;
+		    default:
+			    /* Unknown flag */
+			    return 1;
+	    }
+    }
+#else
+#endif
 
     if ((listen_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         errmsg("eshttpd: Network is down\n");
