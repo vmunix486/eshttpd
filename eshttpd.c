@@ -36,6 +36,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
+#ifdef _LINUX
+#include <getopt.h>
+#else
+#endif
 
 #ifdef _TIME
 #include <time.h>
@@ -251,6 +255,47 @@ void process_request(int fd)
     close(fin);
 }
 
+#ifdef _PENGER
+void penger()
+{
+	printf(
+        "\e[49m                                                                \e[m\n"
+        "\e[49m                                  \e[48;5;0m    \e[49m                          \e[m\n"
+        "\e[49m                          \e[48;5;0m        \e[48;5;237m  \e[48;5;0m      \e[49m                      \e[m\n"
+        "\e[49m                        \e[48;5;0m    \e[48;5;237m            \e[48;5;0m    \e[49m                    \e[m\n"
+        "\e[49m                      \e[48;5;0m    \e[48;5;237m                \e[48;5;0m  \e[49m                    \e[m\n"
+        "\e[49m                    \e[48;5;0m    \e[48;5;237m                  \e[48;5;0m  \e[49m                    \e[m\n"
+        "\e[49m                    \e[48;5;0m  \e[48;5;237m                    \e[48;5;0m  \e[49m                    \e[m\n"
+        "\e[49m                  \e[48;5;0m    \e[48;5;237m                      \e[48;5;0m  \e[49m                  \e[m\n"
+        "\e[49m                  \e[48;5;0m  \e[48;5;237m          \e[48;5;0m      \e[48;5;237m        \e[48;5;0m  \e[49m                  \e[m\n"
+        "\e[49m                  \e[48;5;0m  \e[48;5;237m            \e[48;5;0m    \e[48;5;237m        \e[48;5;0m  \e[49m                  \e[m\n"
+        "\e[49m                \e[48;5;0m    \e[48;5;237m                        \e[48;5;0m    \e[49m                \e[m\n"
+        "\e[49m                \e[48;5;0m  \e[48;5;237m                      \e[48;5;0m          \e[49m              \e[m\n"
+        "\e[49m                \e[48;5;0m  \e[48;5;237m                \e[48;5;0m        \e[48;5;221m        \e[48;5;0m  \e[49m            \e[m\n"
+        "\e[49m                \e[48;5;0m  \e[48;5;237m                \e[48;5;0m    \e[48;5;221m              \e[48;5;0m  \e[49m          \e[m\n"
+        "\e[49m              \e[48;5;0m    \e[48;5;237m                  \e[48;5;0m      \e[48;5;221m          \e[48;5;0m  \e[49m          \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m                        \e[48;5;0m      \e[48;5;221m      \e[48;5;0m  \e[49m          \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m                          \e[48;5;0m          \e[49m            \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m                  \e[48;5;0m          \e[49m                    \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m            \e[48;5;0m        \e[48;5;7m    \e[48;5;0m      \e[49m                  \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m          \e[48;5;0m    \e[48;5;7m              \e[48;5;0m  \e[49m                  \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m          \e[48;5;0m  \e[48;5;7m                \e[48;5;0m    \e[49m                \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m    \e[48;5;7m                  \e[48;5;0m  \e[49m                \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m  \e[48;5;7m                    \e[48;5;0m    \e[49m              \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m  \e[48;5;7m                      \e[48;5;0m  \e[49m              \e[m\n"
+        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m  \e[48;5;7m                      \e[48;5;0m  \e[49m              \e[m\n"
+        "\e[49m              \e[48;5;0m    \e[48;5;237m      \e[48;5;0m  \e[48;5;7m                      \e[48;5;0m  \e[49m              \e[m\n"
+        "\e[49m              \e[48;5;0m    \e[48;5;237m      \e[48;5;0m  \e[48;5;7m                    \e[48;5;0m  \e[48;5;221m  \e[48;5;0m    \e[49m          \e[m\n"
+        "\e[49m          \e[48;5;0m      \e[48;5;221m  \e[48;5;0m  \e[48;5;237m    \e[48;5;0m  \e[48;5;7m                \e[48;5;0m      \e[48;5;221m    \e[48;5;0m    \e[49m        \e[m\n"
+        "\e[49m        \e[48;5;0m    \e[48;5;221m        \e[48;5;0m                      \e[48;5;221m            \e[48;5;0m    \e[49m      \e[m\n"
+        "\e[49m        \e[48;5;0m    \e[48;5;221m            \e[48;5;0m  \e[49m                \e[48;5;0m    \e[48;5;221m          \e[48;5;0m  \e[49m      \e[m\n"
+        "\e[49m          \e[48;5;0m      \e[48;5;221m    \e[48;5;0m      \e[49m                  \e[48;5;0m      \e[48;5;221m    \e[48;5;0m    \e[49m      \e[m\n"
+        "\e[49m              \e[48;5;0m        \e[49m                          \e[48;5;0m        \e[49m        \e[m\n"
+    );
+}
+#else
+#endif
+
 int main(int argc, char **argv)
 {
     int ret, conn_sock, listen_sock;
@@ -261,7 +306,7 @@ int main(int argc, char **argv)
     struct sockaddr_in localadr;
 
 #ifdef _FLAGS
-    while ((opt = getopt(argc, argv, "d:p:h")) != -1) { /* This is parsing all the flags if the user wants to tune anything */
+    while ((opt = getopt(argc, argv, "d:p:th")) != -1) { /* This is parsing all the flags if the user wants to tune anything */
 	    switch (opt) {
 		    case 'd':
 			    docbase = optarg;
@@ -273,7 +318,17 @@ int main(int argc, char **argv)
 			    printf("eshttpd - very small HTTP server\n");
 			    printf("Usage: -p [PORT] -d [DOCBASE]\n");
 			    printf("{-h|-help} This message\n");
+#ifdef _PENGER
+			    printf("-t Something special (: \n");
+#else
+#endif
 			    return 0;
+#ifdef _PENGER
+		    case 't':
+			    penger();
+			    return 0;
+#else
+#endif
 		    default:
 			    /* Unknown flag */
 			    return 1;
