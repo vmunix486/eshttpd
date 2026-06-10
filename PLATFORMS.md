@@ -3,9 +3,6 @@
 # x86
 
  - Ubuntu 4.10 (GCC 3.4.4 + glibc 2.3.2 + Pentium III)
- - NetBSD 10.1 (GCC 10.5.0 + BSD libc + Core 2 Qemu)
- - OpenBSD 7.9 (Clang 19.1.7 + BSD libc + Core 2 Qemu) (idk why you'd do this because the OpenBSD httpd is a lot better than this lol)
- - Windows XP SP3 + POSReady updates (GCC 5.3.0 + MSYS2 20160205 + Pentium M) (Works now, prob bc I switched over to MSYS's implementation of the networking stuff)
 
 ## x86-64
 
@@ -15,4 +12,17 @@
 
 ## ARM
 
- - Termux (Android 16, 21.1.8, bioniclibc) (still Linux, bite me.) (compiles, does not run, bind error)
+ - Termux (Android 16, 21.1.8, bioniclibc) (still Linux, bite me.)
+
+# Windows
+
+## x86
+
+ - Windows XP SP3 + POSReady updates (GCC 5.3.0 + MSYS2 20160205 + Pentium M)
+
+# BSD
+
+## x86
+
+ - NetBSD 10.1 (GCC 10.5.0 + BSD libc + Core 2 Qemu)
+ - OpenBSD 7.9 (Clang 19.1.7 + BSD libc + Core 2 Qemu)

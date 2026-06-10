@@ -49,12 +49,7 @@
 /*===================================*/
 /* Global definitions		     */
 /*===================================*/
-#ifdef _FLAGS
 #define DEF_PORT	80
-static int port = DEF_PORT;
-#else
-#define DEF_PORT	80
-#endif
 #define DEF_CONTENT     "text/html"
 
 #define WS(c)   ( ((c) == ' ') || ((c) == '\t') || ((c) == '\r') || ((c) == '\n') )
@@ -62,12 +57,7 @@ static int port = DEF_PORT;
 #define errmsg(str)     write(STDERR_FILENO, str, sizeof(str) - 1)
 
 #define PATH_MAX        4096
-#ifdef _FLAGS
 #define _PATH_DOCBASE	"/var/www"
-static const char *docbase = _PATH_DOCBASE;
-#else
-#define _PATH_DOCBASE	"/var/www"
-#endif
 
 #ifdef _NO_REDEFINITION
 #else
@@ -76,6 +66,15 @@ static const char *docbase = _PATH_DOCBASE;
 #endif
 
 #define SO_LISTEN_BUFSIZ	128
+
+/*===================================*/
+/* static variables                  */
+/*===================================*/
+#ifdef _FLAGS
+static int port = DEF_PORT;
+static const char *docbase = _PATH_DOCBASE;
+#else
+#endif
 
 /* This is getting the MIME type of files, so the client can understand what type of file it is and show it. */
 
@@ -218,7 +217,11 @@ void process_request(int fd)
 
     /* vmunix: fixed a buffer overflow vulnerability here.
      * This actually saved some SLOC :) */
+#ifdef _FLAGS
+    snprintf(fullpath, sizeof(fullpath), "%s%s", docbase, file);
+#else
     snprintf(fullpath, sizeof(fullpath), "%s%s", _PATH_DOCBASE, file);
+#endif
 
     if (!stat(fullpath, &st) && (st.st_mode & S_IFMT) == S_IFDIR) {
         /* Fixed array index, was wrong before. -vmunix */
@@ -353,7 +356,11 @@ int main(int argc, char **argv)
         errmsg("eshttpd: SO_RCVBUF");
 
     localadr.sin_family = AF_INET;
+#ifdef _FLAGS
+    localadr.sin_port = htons(port);
+#else
     localadr.sin_port = htons(DEF_PORT);
+#endif
     localadr.sin_addr.s_addr = INADDR_ANY;
     if (bind(listen_sock, (struct sockaddr *)&localadr, sizeof(struct sockaddr_in)) < 0) {
         errmsg("eshttpd: bind error (may already be running)\n");

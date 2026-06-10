@@ -13,5 +13,5 @@
  - Add support for compiling with MSVC++ 2008 (for Windows shipment)
  - Have option to use `fork()` (looking at you, uclinux rofl)
  - Add support for flags, such as verbose mode, help, running the program in the foreground, and changing the HTTP port.
- - Fix runtime errors on Android (Termux)
+ - Fix support for setting the document root
 

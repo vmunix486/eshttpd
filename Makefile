@@ -1,7 +1,7 @@
 # User tunable variables
 CC=cc
-CFLAGS= -O3 -std=c89
-DEFS= -D_TIME -D_FLAGS -D_LINUX -D_PENGER
+CFLAGS= -Ofast -flto -std=c89
+DEFS= -D_TIME -D_PENGER -D_FLAGS -D_NO_REDEFINITION
 INCLUDES=
 RM=rm
 RMFLAGS=-f
