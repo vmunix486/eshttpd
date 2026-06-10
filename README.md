@@ -3,9 +3,10 @@ Extremely Small httpd, from ELKS
 
 # Features
 
- - Very small code size (305 lines, 266 SLOC)
+ - Very small code size (Single file of C89)
  - Can serve files 
- - Very Optional (Can turn off dynamic time checking lol)
+ - Very Optional (Can turn off dynamic time checking lol, check OPTIONS.md)
+ - Very Portable (Check PLATFORMS.md) 
  - More TBA
 
 # Goal
