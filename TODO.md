@@ -12,6 +12,5 @@
  - Add support for other files, eg. SVG, PBM, Javascript, Java, etc. etc.
  - Add support for compiling with MSVC++ 2008 (for Windows shipment)
  - Have option to use `fork()` (looking at you, uclinux rofl)
- - Add support for flags, such as verbose mode, help, running the program in the foreground, and changing the HTTP port.
- - Fix support for setting the document root
+ - Add support for more flags, such as verbose mode, help, running the program in the foreground, and changing the HTTP port.
 
