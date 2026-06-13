@@ -320,7 +320,7 @@ int main(int argc, char **argv)
 		    case 'h':
 			    printf("eshttpd - very small HTTP server\n");
 			    printf("Usage: -p [PORT] -d [DOCBASE]\n");
-			    printf("{-h|-help} This message\n");
+			    printf("[-h|-help] This message\n");
 #ifdef _PENGER
 			    printf("-t Something special (: \n");
 #else
