@@ -9,3 +9,4 @@ Now, one of the goals of eshttpd is to be very modular, and as to not forcefully
 | `-D_FLAGS` | Adds support for using flags (-d, -h, etc.) to the program |
 | `-D_LINUX` | Adds the flag needed by Linux to take arguments |
 | `-D_PENGER` | Everyone's second favorite penguin. Reqiures `-D_FLAGS` to be set. |
+| `-D_FORKLESS` | Turn off the part of code that forks. Use if your libc doesn't have `fork()` syscall. |

@@ -373,12 +373,18 @@ int main(int argc, char **argv)
         return 1;
     }
 
+#ifdef _FORKLESS
+    printf("eshttpd compiled with -D_FORKLESS.\n");
+    printf("Not forking...\n");
+#else
     /* become daemon, debug output on 1 and 2*/
     if ((ret = fork()) == -1) {
         errmsg("eshttpd: No more processes\n");
         return 1;
     }
+
     if (ret) exit(0);
+#endif
     ret = open("/dev/null", O_RDWR); /* our log file! */
     dup2(ret, 0);
     dup2(ret, 1);
@@ -394,7 +400,10 @@ int main(int argc, char **argv)
                 exit(1);
             continue;
         }
-
+#ifdef _FORKLESS
+	process_request(conn_sock);
+	close(conn_sock);
+#else
         if ((ret = fork()) == -1) {
             close(conn_sock);
             errmsg("eshttpd: No more processes\n");
@@ -407,5 +416,6 @@ int main(int argc, char **argv)
             close(conn_sock);
             exit(0);
         }
+#endif
     }
 }
