@@ -1,6 +1,6 @@
 # Linux
 
-# x86
+## x86
 
  - Ubuntu 4.10 (GCC 3.4.4 + glibc 2.3.2 + Pentium III)
  - ELKS 0.9.1 (`ia16-elf-gcc` 6.3.0 + 286)
