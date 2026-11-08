@@ -7,6 +7,7 @@ Extremely Small httpd, from ELKS
  - Can serve files 
  - Very Optional (Can turn off dynamic time checking lol, check OPTIONS.md)
  - Very Portable (Check PLATFORMS.md) 
+ - CGI support
  - More TBA
 
 # Goal
