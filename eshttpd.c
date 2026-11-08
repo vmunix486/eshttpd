@@ -26,20 +26,22 @@
 /*===================================*/
 #include <sys/types.h>
 #include <sys/socket.h>
+#define __USE_MISC
 #include <sys/stat.h>
+#undef __USE_MISC
+#include <limits.h>
 #include <fcntl.h>
+#define __USE_POSIX2
 #include <unistd.h>
+#undef __USE_POSIX2
 #include <string.h>
+#include <strings.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
-#ifdef _LINUX
-#include <getopt.h>
-#else
-#endif
 
 #ifdef _TIME
 #include <time.h>
@@ -51,19 +53,13 @@
 /*===================================*/
 #define DEF_PORT	80
 #define DEF_CONTENT     "text/html"
+#define PATH_MAX	4096
 
 #define WS(c)   ( ((c) == ' ') || ((c) == '\t') || ((c) == '\r') || ((c) == '\n') )
 
 #define errmsg(str)     write(STDERR_FILENO, str, sizeof(str) - 1)
 
-#define PATH_MAX        4096
 #define _PATH_DOCBASE	"/var/www"
-
-#ifdef _NO_REDEFINITION
-#else
-#define S_IFMT  00170000
-#define S_IFDIR  0040000
-#endif
 
 #define SO_LISTEN_BUFSIZ	128
 
@@ -73,13 +69,11 @@
 #ifdef _FLAGS
 static int port = DEF_PORT;
 static const char *docbase = _PATH_DOCBASE;
-#else
 #endif
 
 /* This is getting the MIME type of files, so the client can understand what type of file it is and show it. */
 
-char* get_mime_type(char *name)
-{
+char* get_mime_type(char *name) {
     char *dot;
 
     dot = strrchr( name, '.' );
@@ -115,8 +109,7 @@ char* get_mime_type(char *name)
 /* If the libc has support for time, then get the time of
  * connection with time.h in RFC 2822 format. */
 #ifdef _TIME
-void get_http_date(char *buf, size_t len)
-{
+void get_http_date(char *buf, size_t len) {
 	time_t now;
 	struct tm *gmt;
 
@@ -124,17 +117,14 @@ void get_http_date(char *buf, size_t len)
 	gmt = gmtime(&now);
 	strftime(buf, len, "%a, %d %b %Y %H:%M:%S GMT", gmt);
 }
-#endif
 
 /* This is sending the HTTP header to the client. */
-#ifdef _TIME
-void send_header(int fd, char *ct)
-{
+void send_header(int fd, char *ct) {
 	char buf[256]; /* increased from 128 to accept date */ 
 	char datebuf[64];
 
 	get_http_date(datebuf, sizeof(datebuf));
-	snprintf(buf, sizeof(buf),
+	sprintf(buf,
 		"HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
 		"Date: %s\r\n"
 		"Content-Type: %s\r\n", datebuf, ct);
@@ -143,11 +133,10 @@ void send_header(int fd, char *ct)
 
 #else
 
-void send_header(int fd, char *ct)
-{
+void send_header(int fd, char *ct) {
     char buf[128];
 
-    snprintf(buf,
+    sprintf(buf,
 	"HTTP/1.0 200 OK\r\nServer: eshttpd\r\n"
         "Date: Mon Jun 8 15:37:46 GMT 2026\r\n"
         "Content-Type: %s\r\n",ct);
@@ -158,30 +147,28 @@ void send_header(int fd, char *ct)
 
 /* This is sending the 404 Error if the file the client specified does not work */
 #ifdef _TIME
-void send_error(int fd, int errnum, char *str)
-{
+void send_error(int fd, int errnum, char *str) {
 	char buf[256]; /* increased from 128 */
 	char datebuf[64];
 
 	get_http_date(datebuf, sizeof(datebuf));
-	snprintf(buf, sizeof(buf),
+	sprintf(buf,
 		"HTTP/1.0 %d %s\r\nContent-Type: %s\r\n", errnum, str, DEF_CONTENT);
 	write(fd, buf, strlen(buf));
-	snprintf(buf, sizeof(buf),
+	sprintf(buf,
 		"Connection: close\r\n"
 		"Date: %s\r\n"
 		"\r\n%s\r\n", datebuf, str);
 	write(fd, buf, strlen(buf));
 }
 #else
-void send_error(int fd, int errnum, char *str)
-{
+void send_error(int fd, int errnum, char *str) {
     char buf[128];
 
-    snprintf(buf,
+    sprintf(buf,
 	"HTTP/1.0 %d %s\r\nContent-type: %s\r\n", errnum, str, DEF_CONTENT);
     write(fd, buf, strlen(buf));
-    snprintf(buf,
+    sprintf(buf,
 		"Connection: close\r\n"
                 "Date: Thu Apr 26 15:37:46 GMT 2001\r\n"
                 "\r\n%s\r\n", str);
@@ -189,8 +176,7 @@ void send_error(int fd, int errnum, char *str)
 }
 #endif
 
-void process_request(int fd)
-{
+void process_request(int fd) {
     int fin, ret;
     char *c, *file;
     off_t size;
@@ -217,10 +203,14 @@ void process_request(int fd)
 
     /* vmunix: fixed a buffer overflow vulnerability here.
      * This actually saved some SLOC :) */
+
+	/* vmunix 11/7/26
+         * you f*cking dumb*ss, snprintf() ISN'T A THING IN C89!!!
+	 * snprintf() WAS INVENTED IN C99!!! */
 #ifdef _FLAGS
-    snprintf(fullpath, sizeof(fullpath), "%s%s", docbase, file);
+    sprintf(fullpath, "%s%s", docbase, file);
 #else
-    snprintf(fullpath, sizeof(fullpath), "%s%s", _PATH_DOCBASE, file);
+    sprintf(fullpath, "%s%s", _PATH_DOCBASE, file);
 #endif
 
     if (!stat(fullpath, &st) && (st.st_mode & S_IFMT) == S_IFDIR) {
@@ -247,7 +237,7 @@ void process_request(int fd)
     size = lseek(fin, 0, SEEK_END);
     lseek(fin, 0, SEEK_SET);
     send_header(fd, get_mime_type(fullpath));
-	snprintf(buf, sizeof(buf), "Content-Length: %ld\r\n\r\n", (long)size);
+	sprintf(buf, "Content-Length: %ld\r\n\r\n", (long)size);
     write(fd, buf, strlen(buf));
 
     do {
@@ -257,54 +247,11 @@ void process_request(int fd)
     } while (ret == sizeof(buf));
     close(fin);
 }
-
-#ifdef _PENGER
-void penger()
-{
-	printf(
-        "\e[49m                                                                \e[m\n"
-        "\e[49m                                  \e[48;5;0m    \e[49m                          \e[m\n"
-        "\e[49m                          \e[48;5;0m        \e[48;5;237m  \e[48;5;0m      \e[49m                      \e[m\n"
-        "\e[49m                        \e[48;5;0m    \e[48;5;237m            \e[48;5;0m    \e[49m                    \e[m\n"
-        "\e[49m                      \e[48;5;0m    \e[48;5;237m                \e[48;5;0m  \e[49m                    \e[m\n"
-        "\e[49m                    \e[48;5;0m    \e[48;5;237m                  \e[48;5;0m  \e[49m                    \e[m\n"
-        "\e[49m                    \e[48;5;0m  \e[48;5;237m                    \e[48;5;0m  \e[49m                    \e[m\n"
-        "\e[49m                  \e[48;5;0m    \e[48;5;237m                      \e[48;5;0m  \e[49m                  \e[m\n"
-        "\e[49m                  \e[48;5;0m  \e[48;5;237m          \e[48;5;0m      \e[48;5;237m        \e[48;5;0m  \e[49m                  \e[m\n"
-        "\e[49m                  \e[48;5;0m  \e[48;5;237m            \e[48;5;0m    \e[48;5;237m        \e[48;5;0m  \e[49m                  \e[m\n"
-        "\e[49m                \e[48;5;0m    \e[48;5;237m                        \e[48;5;0m    \e[49m                \e[m\n"
-        "\e[49m                \e[48;5;0m  \e[48;5;237m                      \e[48;5;0m          \e[49m              \e[m\n"
-        "\e[49m                \e[48;5;0m  \e[48;5;237m                \e[48;5;0m        \e[48;5;221m        \e[48;5;0m  \e[49m            \e[m\n"
-        "\e[49m                \e[48;5;0m  \e[48;5;237m                \e[48;5;0m    \e[48;5;221m              \e[48;5;0m  \e[49m          \e[m\n"
-        "\e[49m              \e[48;5;0m    \e[48;5;237m                  \e[48;5;0m      \e[48;5;221m          \e[48;5;0m  \e[49m          \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m                        \e[48;5;0m      \e[48;5;221m      \e[48;5;0m  \e[49m          \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m                          \e[48;5;0m          \e[49m            \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m                  \e[48;5;0m          \e[49m                    \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m            \e[48;5;0m        \e[48;5;7m    \e[48;5;0m      \e[49m                  \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m          \e[48;5;0m    \e[48;5;7m              \e[48;5;0m  \e[49m                  \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m          \e[48;5;0m  \e[48;5;7m                \e[48;5;0m    \e[49m                \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m    \e[48;5;7m                  \e[48;5;0m  \e[49m                \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m  \e[48;5;7m                    \e[48;5;0m    \e[49m              \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m  \e[48;5;7m                      \e[48;5;0m  \e[49m              \e[m\n"
-        "\e[49m              \e[48;5;0m  \e[48;5;237m        \e[48;5;0m  \e[48;5;7m                      \e[48;5;0m  \e[49m              \e[m\n"
-        "\e[49m              \e[48;5;0m    \e[48;5;237m      \e[48;5;0m  \e[48;5;7m                      \e[48;5;0m  \e[49m              \e[m\n"
-        "\e[49m              \e[48;5;0m    \e[48;5;237m      \e[48;5;0m  \e[48;5;7m                    \e[48;5;0m  \e[48;5;221m  \e[48;5;0m    \e[49m          \e[m\n"
-        "\e[49m          \e[48;5;0m      \e[48;5;221m  \e[48;5;0m  \e[48;5;237m    \e[48;5;0m  \e[48;5;7m                \e[48;5;0m      \e[48;5;221m    \e[48;5;0m    \e[49m        \e[m\n"
-        "\e[49m        \e[48;5;0m    \e[48;5;221m        \e[48;5;0m                      \e[48;5;221m            \e[48;5;0m    \e[49m      \e[m\n"
-        "\e[49m        \e[48;5;0m    \e[48;5;221m            \e[48;5;0m  \e[49m                \e[48;5;0m    \e[48;5;221m          \e[48;5;0m  \e[49m      \e[m\n"
-        "\e[49m          \e[48;5;0m      \e[48;5;221m    \e[48;5;0m      \e[49m                  \e[48;5;0m      \e[48;5;221m    \e[48;5;0m    \e[49m      \e[m\n"
-        "\e[49m              \e[48;5;0m        \e[49m                          \e[48;5;0m        \e[49m        \e[m\n"
-    );
-}
-#else
-#endif
-
-int main(int argc, char **argv)
-{
+        
+int main(int argc, char **argv) {
     int ret, conn_sock, listen_sock;
 #ifdef _FLAGS
     int opt;
-#else
 #endif
     struct sockaddr_in localadr;
 
@@ -323,22 +270,20 @@ int main(int argc, char **argv)
 			    printf("[-h|-help] This message\n");
 #ifdef _PENGER
 			    printf("-t Something special (: \n");
-#else
 #endif
 			    return 0;
 #ifdef _PENGER
 		    case 't':
 			    penger();
 			    return 0;
-#else
 #endif
 		    default:
 			    /* Unknown flag */
 			    return 1;
 	    }
     }
-#else
 #endif
+    (void)argc;(void)argv;
 
     if ((listen_sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         errmsg("eshttpd: Network is down\n");
