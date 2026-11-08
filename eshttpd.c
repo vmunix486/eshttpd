@@ -265,18 +265,9 @@ int main(int argc, char **argv) {
 			    port = atoi(optarg);
 			    break;
 		    case 'h':
-			    printf("eshttpd - very small HTTP server\n");
-			    printf("Usage: -p [PORT] -d [DOCBASE]\n");
-			    printf("[-h|-help] This message\n");
-#ifdef _PENGER
-			    printf("-t Something special (: \n");
-#endif
-			    return 0;
-#ifdef _PENGER
-		    case 't':
-			    penger();
-			    return 0;
-#endif
+			    puts("eshttpd - very small HTTP server");
+			    puts("Usage: -p [PORT] -d [DOCBASE]");
+			    puts("[-h|-help] This message");
 		    default:
 			    /* Unknown flag */
 			    return 1;
@@ -319,8 +310,8 @@ int main(int argc, char **argv) {
     }
 
 #ifdef _FORKLESS
-    printf("eshttpd compiled with -D_FORKLESS.\n");
-    printf("Not forking...\n");
+    puts("eshttpd compiled with -D_FORKLESS.");
+    puts("Not forking...");
 #else
     /* become daemon, debug output on 1 and 2*/
     if ((ret = fork()) == -1) {
